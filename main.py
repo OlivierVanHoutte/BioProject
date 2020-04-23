@@ -151,13 +151,14 @@ def DNA_to_text(strings, added_bits, conversions, amount=1):
 
 
 if __name__ == '__main__':
-    input = 'badkamer qiU!,dhg qhgqshgmquh'
+    input = 'badkamer qiU!,dhg qhgqshgmquh qohg qduhsdi flIBDFQDHGB'
 
     output = {}
-    print(f"Converting input string of size {len(input) * 8} bytes")
+    print(f"Converting input string of size {len(input)} bytes")
     # simple = to_simple_DNA(input)
     DNA, compact, added_bits, conversions = to_DNA(input, 1000)
     print(f"DNA:\n\t{compact}")
+    print(f"length:\n\t{len(compact)}")
     retries = 500
     for i in range(1, 50):
         correct = True
