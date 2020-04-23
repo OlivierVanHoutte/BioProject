@@ -1,174 +1,182 @@
+from collections import defaultdict
+from utils import to_bin, is_pow_two, bye_to_char
+from itertools import combinations
+import math
+import random
+import string
 
-# mapping voor bitwise conversion
-mappings = {}
-mappings['00'] = 'A'
-mappings['01'] = 'T'
-mappings['10'] = 'C'
-mappings['11'] = 'G'
+Bases = ['A', 'C', 'G', 'T']
 
-# bitwise conversion
-def string_to_DNA_Bitwise(str):
-	result = ''
-	for i in str:
-		bits = bin(ord(i))[2:]
-		bits = '00000000'[len(bits):] + bits
-		print(i, '->', bits)
-		for k in range(int(len(bits)/2)):
-			DNA_Char = mappings[bits[2*k] + bits[2*k+1]]
-			print(bits[2*k] + bits[2*k+1], '->', DNA_Char)
-			result += DNA_Char
-	return result
+Degenerated = {
+    'R': ['A', 'G'],
+    'Y': ['C', 'T'],
+    'M': ['A', 'C'],
+    'K': ['G', 'T'],
+    'S': ['C', 'G'],
+    'W': ['A', 'T'],
+    'H': ['A', 'C', 'T'],
+    'B': ['C', 'G', 'T'],
+    'V': ['A', 'C', 'G'],
+    'D': ['A', 'G', 'T'],
+    'N': ['A', 'C', 'G', 'T']
+}
 
-# mogenlijke Stuff in geval van 1 DNA character per real character (15 opties)
-mix = {}
-mix['A'] = [['A']]
-mix['B'] = [['A', 'T']]
-mix['C'] = [['C']]
-mix['D'] = [['A', 'C']]
-mix['E'] = [['A', 'T', 'C']]
-mix['F'] = [['A', 'C', 'G']]
-mix['G'] = [['G']]
-mix['H'] = [['A', 'G']]
-mix['I'] = [['A', 'T', 'G']]
-mix['J'] = [['C', 'G']]
-mix['K'] = [['T', 'C']]
-mix['L'] = [['T', 'C', 'G']]
-mix['M'] = [['T', 'G']]
-mix['N'] = [['A', 'T', 'C', 'G']]
-mix['O'] = ['#']
-mix['P'] = ['#']
-mix['Q'] = ['#']
-mix['R'] = ['#']
-mix['S'] = ['#']
-mix['T'] = [['T']]
-mix['U'] = ['#']
-mix['V'] = ['#']
-mix['W'] = ['#']
-mix['X'] = ['#']
-mix['Y'] = ['#']
-mix['Z'] = ['#']
-mix[' '] = ['#']
-
-# Old
-def _genMix(left, count, mixchar):
-	DNA_char_r = {'A', 'C', 'T', 'G'}
-	while (len(DNA_char_r)  > 0 ):
-		r = DNA_char_r.pop()
-		DNA_char_r.add(r)
-		cright = [r]
-		for j in DNA_char_r.copy():
-			if j not in cright:
-				cright.append(j)
-			t = left.copy()
-			t.append(cright.copy())
-			if count == 0:
-				mix[next(mixchar)] = t
-			else:
-				_genMix(t ,count-1, mixchar)
-		DNA_char_r.remove(r)
-
-# New (and improved?)
-def _genMix2(mixchar, count = 1, l = []):
-
-	import itertools
-	x = ['A', 'C', 'T', 'G']
-	for i1 in range(len(x)):
-		for c1 in [c1 for c1 in itertools.combinations(x, i1+1)]:
-			l1 = list(c1), [i1 for i1 in x if not i1 in c1]
-			l2 = l.copy()
-			l2.append(l1[0])
-			if count == 0:
-				mix[next(mixchar)] = l2
-			else:
-				_genMix2(mixchar, count-1, l2)
-		
-def genMix(count):	
-	mixchar = iter(mix.keys())
-	try:
-		_genMix2(mixchar, count-1)
-	except Exception as e:
-		print('-- 2 per character --', e)
-	for i in mix:
-		print(i, mix[i])
-
-# Generate a list of DNA strings fitting the given string
-def genDNAStrings(_str, _amount):
-	results = []
-	while _amount > 0:
-		results.append(genDNAString(_str))
-		_amount -= 1
-	return results
-
-# Generate a DNA string fitting the given string 
-def genDNAString(_str):
-	import random
-	result = ''
-	for i in _str.upper():
-		for l in mix[i]:
-			index = random.randint(0, len(l)-1)
-			result += l[index]
-	return result
-
-# Convert DNA codons to possible characters
-def getPossibleInput(koppels):
-	import math
-	total_score = -math.inf
-	choice = '#'
-	for i in mix:
-		found = True
-		score = 0
-		for c in mix[i][0]:
-			cFound = False
-			for koppel in koppels:
-				if koppel[0] not in mix[i][0]:
-					found = False
-					break	
-				if c == koppel[0]:
-					cFound = True
-			if not cFound:
-				score -= 1
-			if not found:
-				break
-			
-		if len(koppels[0]) == 2:
-			for c in mix[i][1]:
-				cFound = False
-				for koppel in koppels:
-					if koppel[1] not in mix[i][1]:
-						found = False
-						break	
-					if c == koppel[1]:
-						cFound = True
-				if not cFound:
-					score -= 1
-				if not found:
-					break
-		
-		if found:
-			if score > total_score:
-				choice = i
-				total_score = score
-	return choice		
-
-if __name__ == "__main__":
-	print(string_to_DNA_Bitwise("Hallo ik ben Olivier")) #TAATTAACTAAGTATATATTTATCTATGTACATACTTACCTACGTAGATAGTTAGCTAGGTTAATTTA
-	koppelSize = 2
-	genMix(koppelSize)
-	res = genDNAStrings("Hallo ik ben Olivier", 80)
-	print(res)
-	result = ''
-	i = 0
-	while i < len(res[0]):
-		koppels = []
-		for j in res:
-			s = ''
-			for k in range(koppelSize):
-				s += j[i+k]
-			koppels.append(s)
-		result += getPossibleInput(koppels)
-		i += 1 + k
-
-	print(result)
+Degen_dict = {}
 
 
+def convert_to_valid_bases_amount(bases):
+    removed_bases = []
+    while not is_pow_two(len(bases)):
+        removed_bases.append(bases[-1])
+        bases = bases[:-1]
 
+    combs = []
+    for i in range(1, len(Bases) + 1):
+        tmp = list(combinations(Bases, i))
+        combs += tmp
+
+    if len(bases) > len(combs):
+        print("To much degenerated bases for the amount of bases.")
+        exit(0)
+
+    # if removed_bases:
+    #     print(f"Removed bases {removed_bases} to receive a convertible amount")
+    return bases, combs
+
+
+def conversion(bases):
+    bases, combs = convert_to_valid_bases_amount(bases)
+    for i in range(len(bases)):
+        if len(combs[i]) > 1:
+            Degen_dict[bases[i]] = list(combs[i])
+
+    bits_per_base = 0
+    tmp_dict = {}
+    for i in range(len(bases)):
+        bin = ''.join((format(i, 'b')))
+        # while len(bin) < bits_per_base:
+        #     bin = '0' + bin
+        if len(bin) > bits_per_base:
+            bits_per_base = len(bin)
+        tmp_dict[bin] = bases[i]
+
+    conv_dict = {}
+    for key, val in tmp_dict.items():
+        new = key
+        while len(new) < bits_per_base:
+            new = '0' + new
+        conv_dict[new] = val
+
+    return conv_dict
+
+
+def to_DNA(input, amount=1000):
+    bases = Bases + list(Degenerated.keys())
+    conversions = conversion(bases)
+    stings = []
+    step = len(list(conversions.keys())[0])
+
+    # print(Degen_dict)
+
+    binary, added_bits = to_bin(input, step)
+
+    compact = ''
+    strings = []
+    for i in range(amount):
+        output = ''
+        for j in range(0, len(binary), step):
+            bit = binary[j:j + step]
+            tmp = conversions[bit]
+            if i == 0:
+                compact += tmp
+            if tmp in Degenerated.keys():
+                output += random.choice(Degen_dict[tmp])
+            else:
+                output += tmp
+
+        strings.append(output)
+    return strings, compact, added_bits, conversions
+
+
+def to_simple_DNA(input):
+    binary, added_bits = to_bin(input)
+    conversions = conversion(Bases)
+    output = ''
+    for i in range(0, len(binary), 2):
+        bit = binary[i:i + 2]
+        output += conversions[bit]
+    return [output]
+
+
+def DNA_to_text(strings, added_bits, conversions, amount=1):
+    binary = ''
+    combination_dict = defaultdict(set)
+
+    picked = random.sample(strings, amount)
+
+    for i in range(len(picked[0])):
+        for s in picked:
+            combination_dict[i].add(s[i])
+
+    for index, items in combination_dict.items():
+        items = list(items)
+        if len(items) == 1:
+            if items[0] not in Bases:
+                print("item not in bases, error. Picking 0")
+                binary += conversions[conversions.keys()[0]]
+            else:
+                for key, val in conversions.items():
+                    if val == items[0]:
+                        binary += key
+                        break
+        else:
+            added = False
+            for key, val in Degen_dict.items():
+                intersect = set(val).intersection(set(items))
+                if intersect == set(items):
+                    for conv_bin, conv_val in conversions.items():
+                        if conv_val == key:
+                            binary += conv_bin
+                    added = True
+                    break
+            if not added:
+                print("item not in bases, error. Picking 0")
+                binary += conversions[conversions.keys()[0]]
+    binary = binary[added_bits:]
+    string = ""
+    for i in range(0, len(binary), 8):
+        byte = binary[i:i + 8]
+        string += bye_to_char(byte)
+    return picked, string
+
+
+if __name__ == '__main__':
+    input = 'badkamer qiU!,dhg qhgqshgmquh'
+
+    output = {}
+    print(f"Converting input string of size {len(input) * 8} bytes")
+    # simple = to_simple_DNA(input)
+    DNA, compact, added_bits, conversions = to_DNA(input, 1000)
+    print(f"DNA:\n\t{compact}")
+    retries = 500
+    for i in range(1, 50):
+        correct = True
+        corr = 0
+        for j in range(retries):
+            picked, parsed = DNA_to_text(DNA, added_bits, conversions, i)
+            # print(f"\n{picked}\n converts to '{parsed}'")
+            if input != parsed:
+                correct = False
+            else:
+                corr += 1
+        if correct:
+            print(f'correct with {i} DNA strings')
+            # break
+        else:
+            if corr == 0:
+                print(f'error in conversion with rate 0% DNA strings for length {i}')
+
+            else:
+                print(f'error in conversion with rate {(corr / retries) * 100}% DNA strings for amount {i}')
+
+    print("Done")
