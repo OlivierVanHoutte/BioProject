@@ -33,7 +33,7 @@ Als we aan DNA denken, worden we al snel herinnerd aan de 4 basen. Adenine (A), 
 We kunnen dan elke DNA string (met een even aantal bits) omzetten naar DNA.
 \newline
 
-0111001110 -> GTATC
+0111001110 $\rightarrow$ GTATC
 \newline
 
 \noindent
@@ -66,20 +66,59 @@ A & G & C & T\\
 \noindent
 We kunne  aan hier de getallen 0 t.e.m. 14 aan toewijzen. we kunnen deze zelfde getallen ook representeren met 4 bits.
 Hierbij komen op een probleem. Met 4 bits kan je de 16 getallen representeren, namenlijk 0 t.e.m. 15. 1 Getal meer dan de 15 getallen die we met de base-sets bekomen. We zullen dus 1 bit moeten laten vallen. Dat brengt ons op 3 bits die de getallen 0 t.e.m. 7 voorstellen.
-We kiezen dan 8 sets uit onze 15, en wijzen aan elk van deze sets 1 getal tussen 0 en 7 toe. 
+We kiezen dan 8 sets uit onze 15, en wijzen aan elk van deze sets 1 getal tussen 0 en 7 toe. We geven ze ook telkens een nieuwe letter indien nodig, zodat we deze makkelijker in string vorm kunnen representeren.
 \newline   
 
-\begin{tabular}{ l | c c c|c}
-	0&A&&& 000\\
-	1&G&&& 001\\
-	2&C&&& 010\\
-	3&T&&& 011\\
-	4&A & G&& 100\\
-	5&A & C&& 101\\
-	6&A & T&& 110\\
-	7&G & C&& 111\\
+\begin{tabular}{ c || c | c c |c}
+	A & 0 & A && 000\\
+	G & 1 & G && 001\\
+	C & 2 & C && 010\\
+	T & 3 & T && 011\\
+	R & 4 & A & G& 100\\
+	M & 5 & C & T& 101\\
+	Y & 6 & A & C& 110\\
+	K & 7 & G & T& 111\\
 \end{tabular}
 \newline
+
+\noindent
+We kunnen nu weer een string van bits omzetten naar De gekozen sets. Als het aantal bits niet deelbaar is door 3, voegen we de nodige bits toe aan het begin van de string.
+\newline
+
+(00)0111001110 $\rightarrow$ AKGY
+\newline
+
+\noindent
+Om de nodige DNA strings te verkrijgen, kiezen we voor elke letter een base uit de corresponderende set.
+\newline
+
+\begin{tabular}{c}
+	AKGY\\
+	\hline
+	AGGA\\
+	ACGT\\
+	AGGT\\
+	ACGA\\
+	...\\
+\end{tabular}
+
+\noindent
+We bouwen nu zoveel strings als we willen. Dit kan zeer efficiënt met moderne technieken.
+Wanneer we de data terug willen decoden, kieze we weer een aantal DNA strings uit de gegenereerde strings.
+We checken welke basen we terug vinden, en achterhalen zo welke corresponderende letter hier mee overeen komt.
+\newline
+
+\noindent
+vb: We zien op positie 3, in verschillende strings, de characters A en C. Dan weten we dat dit een Y representeert.
+
+Stel dat er maar 1 soort base wordt gelezen op een bepaalde positie. Dan zijn er 2 opties. 
+
+\begin{itemize}
+	\item We lezen inderdaad een letter met maar 1 base in zijn set. Correct.
+	\item We lezen een letter met 2 basen in zijn set, maar zien maar 1 base in onze gekozen strings. Fout. 
+\end{itemize}
+
+Dit zorgt ervoor dat we niet altijd de correcte output terug krijgen. 
 
 \section{Correctheid}
 De kans op het correct lezen van een character (Denk ik):
