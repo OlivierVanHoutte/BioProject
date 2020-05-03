@@ -69,21 +69,32 @@ Hierbij komen op een probleem. Met 4 bits kan je de 16 getallen representeren, n
 We kiezen dan 8 sets uit onze 15, en wijzen aan elk van deze sets 1 getal tussen 0 en 7 toe. 
 \newline   
 
-\begin{tabular}{ l | c c c c}
-	0&A&&&\\
-	1&G&&&\\
-	2&C&&&\\
-	3&T&&&\\
-	4&A & G&&\\
-	5&A & C&&\\
-	6&A & T&&\\
-	7&G & C&&\\
+\begin{tabular}{ l | c c c|c}
+	0&A&&& 000\\
+	1&G&&& 001\\
+	2&C&&& 010\\
+	3&T&&& 011\\
+	4&A & G&& 100\\
+	5&A & C&& 101\\
+	6&A & T&& 110\\
+	7&G & C&& 111\\
 \end{tabular}
 \newline
 
 \section{Correctheid}
+De kans op het lezen van een fout character (Denk ik) -> 1 soort character wanneer het er 2 verschillende moesten zijn:
+\newline
+
+$L*\left(\frac{1}{2^{N}}\right)$
+\newline
+
+met L het aantal characters in de DNA strings en N het aantal strings we gebruiken om te checken.
 
 \section{In de praktijk}
+
+Het is simpeler om meerdere korte DNA strings te maken en lezen dan 1 lange. Dat is exact wat we met deze vorm van encoding doen. We maken i.p.v. 1 lange DNA string, veel korte, die we dan ook parallel kunnen inlezen indien nodig.
+
+Zoals we weten bestaat DNA uit 2 strings. Zodat we zeker de juiste kant kiezen tijden het omzetten, kunnen we best elke DNA string beginnen en eindigen met een primer. Een kort stukje DNA van een vaste vorm, die het begin/ einde en de oriëntatie van het DNA aanduidt. Dit verlengd onze DNA string een beetje, maar zou een relatief kleine impact hebben op het eindresultaat.
 
 \section{Conclusie}
 
