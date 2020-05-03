@@ -82,13 +82,20 @@ We kiezen dan 8 sets uit onze 15, en wijzen aan elk van deze sets 1 getal tussen
 \newline
 
 \section{Correctheid}
-De kans op het lezen van een fout character (Denk ik) -> 1 soort character wanneer het er 2 verschillende moesten zijn:
+De kans op het correct lezen van een character (Denk ik):
 \newline
 
-$L*\left(\frac{1}{2^{N}}\right)$
+$1-\left(\frac{1}{2^{N}}\right)$
 \newline
 
 met L het aantal characters in de DNA strings en N het aantal strings we gebruiken om te checken.
+
+Dat maakt de kans op een volledig correct gelezen string
+\newline
+
+$\left(1-\left(\frac{1}{2^{N}}\right)\right)\ ^{L}$
+\newline
+
 
 \section{In de praktijk}
 
