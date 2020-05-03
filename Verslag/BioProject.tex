@@ -88,25 +88,59 @@ De kans op het correct lezen van een character (Denk ik):
 $1-\left(\frac{1}{2^{N}}\right)$
 \newline
 
-met L het aantal characters in de DNA strings en N het aantal strings we gebruiken om te checken.
-
+\noindent
 Dat maakt de kans op een volledig correct gelezen string
 \newline
 
 $\left(1-\left(\frac{1}{2^{N}}\right)\right)\ ^{L}$
 \newline
 
+\noindent
+Met L het aantal characters in de DNA strings en N het aantal strings we gebruiken om te checken.
+
+Onze tests komen zeer goed overeen met deze formule. 
+We testen hier met een input DNA string van lengte L = 144;
+\newline
+
+\begin{tabular}{c|| c | c || c}
+	N & tests ($\%$) & formule ($\%$) & verschil \\
+	\hline
+	4 & 0.0 & 0.0 & 0.0\\
+	5 & 1.5 & 1.0  & 0.5\\
+	6 & 12.3 & 10.4 & 1.9\\
+	7 & 35.6 & 32.3 & 3.3\\
+	8 & 58.6 & 57.0 & 1.6\\
+	9 & 77.6 & 75.3 & 2.3\\
+	10 & 88.3 & 86.9 & 1.4\\
+	11 & 93.3 & 93.2 & 0.1\\
+	12 & 97.2 & 96.5 & 0.7\\
+	13 & 98.6 & 98.2 & 0.4\\
+	14 & 99.3 & 99.1 & 0.2\\
+	15 & 99.7 & 99.6 & 0.1\\
+	16 & 99.8 & 99.8 & 0.0\\
+	17 & 99.9 & 99.9  & 0.0\\
+	18 & 99.9 & 99.9  & 0.0\\
+	19 & 100 & 100  & 0.0\\
+	...  & ... & ... & ...\\
+	
+	$\infty$ & 100 & 100  & 0.0\\
+	
+\end{tabular}
+\newline
+
+We verklaren de kleine verschillen met afrondings fouten.
+
 
 \section{In de praktijk}
 
 Het is simpeler om meerdere korte DNA strings te maken en lezen dan 1 lange. Dat is exact wat we met deze vorm van encoding doen. We maken i.p.v. 1 lange DNA string, veel korte, die we dan ook parallel kunnen inlezen indien nodig.
+\newline
 
 Zoals we weten bestaat DNA uit 2 strings. Zodat we zeker de juiste kant kiezen tijden het omzetten, kunnen we best elke DNA string beginnen en eindigen met een primer. Een kort stukje DNA van een vaste vorm, die het begin/ einde en de oriëntatie van het DNA aanduidt. Dit verlengd onze DNA string een beetje, maar zou een relatief kleine impact hebben op het eindresultaat.
 
 \section{Conclusie}
 
-And that's the way the cookie crumbles.
-
+Er is dus zeker nog meer onderzoek mogenlijk naar DNA als data storage. Onze inspiratie voor deze paper was dan ook een artikel uitgebracht vorig jaar. Maar wij vinden dit al zeker een zeer goede encoding.
 
 \begin{footnotesize}
 
