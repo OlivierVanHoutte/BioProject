@@ -2,6 +2,8 @@
 \usepackage[dvips]{graphicx}
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb,amsmath,array}
+\usepackage{parskip}
+\usepackage{multicol}
 
 \voffset 0 cm \hoffset 0 cm \addtolength{\textwidth}{0cm}
 \addtolength{\textheight}{0cm}\addtolength{\leftmargin}{0cm}
@@ -29,14 +31,13 @@ Als we aan DNA denken, worden we al snel herinnerd aan de 4 basen. Adenine (A), 
 00 = A, 01 = G, 10 = C, 11 = T
 \newline
 
-\noindent
+
 We kunnen dan elke DNA string (met een even aantal bits) omzetten naar DNA.
 \newline
 
 0111001110 $\rightarrow$ GTATC
 \newline
 
-\noindent
 Het kan echter efficiënter. 
 
 
@@ -44,31 +45,36 @@ Het kan echter efficiënter.
 
 In plaats van simpelweg 2 bit aan elke base toe te wijzen, stellen we nu eerst alle mogenlijke sets op bestaande uit unieke combinaties van de 4 basen. Er zijn er zo 15.
 
-\begin{tabular}{ l c c c}
-A&&&\\
-G&&&\\
-C&&&\\
-T&&&\\
-A & G&&\\
-A & C&&\\
-A & T&&\\
-G & C&&\\
-G & T&&\\
-C & T&&\\
-A & G & C&\\
-A & G & T&\\
-A & C & T&\\
-G & C & T&\\
-A & G & C & T\\
-\end{tabular}
-\newline
+\begin{center}
+\begin{multicols}{3}
+	
+\begin{enumerate}
+\item A
+\item G
+\item C
+\item T
+\item A G
+\item A C
+\item A T
+\item G C
+\item G T
+\item C T
+\item A G C
+\item A G T
+\item A C T
+\item G C T
+\item A G C T
+\end{enumerate}
 
-\noindent
+\end{multicols}
+\end{center}
+
 We kunne  aan hier de getallen 0 t.e.m. 14 aan toewijzen. we kunnen deze zelfde getallen ook representeren met 4 bits.
-Hierbij komen op een probleem. Met 4 bits kan je de 16 getallen representeren, namenlijk 0 t.e.m. 15. 1 Getal meer dan de 15 getallen die we met de base-sets bekomen. We zullen dus 1 bit moeten laten vallen. Dat brengt ons op 3 bits die de getallen 0 t.e.m. 7 voorstellen.
-We kiezen dan 8 sets uit onze 15, en wijzen aan elk van deze sets 1 getal tussen 0 en 7 toe. We geven ze ook telkens een nieuwe letter indien nodig, zodat we deze makkelijker in string vorm kunnen representeren.
-\newline   
+Hierbij komen op een probleem. Met 4 bits kan je de 16 getallen representeren, namenlijk 0 t.e.m. 15. 1 Getal meer dan de 15 getallen die we met de base-sets bekomen. We zullen dus 1 bit moeten laten vallen. Dat brengt ons op 3 bits die de getallen 0 t.e.m. 7 voorstellen. Hierdoor kiezen we 8 sets in plaats van 15.
+We geven ze ook telkens een nieuwe letter indien nodig, zodat we deze makkelijker in string vorm kunnen representeren. Hiervoor maken we gebruik van IUPAC standaard voor degenerate base symbols.
 
+   
+\begin{center}
 \begin{tabular}{ c || c | c c |c}
 	A & 0 & A && 000\\
 	G & 1 & G && 001\\
@@ -79,39 +85,38 @@ We kiezen dan 8 sets uit onze 15, en wijzen aan elk van deze sets 1 getal tussen
 	Y & 6 & A & C& 110\\
 	K & 7 & G & T& 111\\
 \end{tabular}
-\newline
+\end{center}
 
-\noindent
-We kunnen nu weer een string van bits omzetten naar De gekozen sets. Als het aantal bits niet deelbaar is door 3, voegen we de nodige bits toe aan het begin van de string.
+We kunnen nu weer een string van bits omzetten naar een string, gerepresenteerd de gekozen sets. Indien het aantal bits niet deelbaar is door 3, voegen we de nodige nullen toe aan het begin van de string waardoor elke base de representatie is van exact 3 bits.
 \newline
 
 (00)0111001110 $\rightarrow$ AKGY
 \newline
 
-\noindent
 Om de nodige DNA strings te verkrijgen, kiezen we voor elke letter een base uit de corresponderende set.
+Waneer we een reeks data willen encoderen door DNA zullen we in dit geval, voor elke 3 bits, een corresponderende degenerate base vinden in de hierboven gedefiniëerde tabel. Aangezien sommige bases een combinatie zijn van Adenine, Cytosine, Guanine en Thymine, zullen we meerdere DNA strings moeten genereren te encodering van een base op positie i in het resultaat op de overeenkomstige positie in elke string terug te vinden.
 \newline
-
+\begin{center}
 \begin{tabular}{c}
-	AKGY\\
+	A K GCA Y \\
 	\hline
-	AGGA\\
-	ACGT\\
-	AGGT\\
-	ACGA\\
+	A$|$G$|$GCA$|$A$|$\\
+	A$|$C$|$GCA$|$T$|$\\
+	A$|$G$|$GCA$|$T$|$\\
+	A$|$C$|$GCA$|$A$|$\\
 	...\\
 \end{tabular}
+\end{center}
 
-\noindent
-We bouwen nu zoveel strings als we willen. Dit kan zeer efficiënt met moderne technieken.
-Wanneer we de data terug willen decoden, kieze we weer een aantal DNA strings uit de gegenereerde strings.
-We checken welke basen we terug vinden, en achterhalen zo welke corresponderende letter hier mee overeen komt.
+We bouwen nu zoveel strings als nodig is, wat zeer efficiënt kan met moderne technieken.
+Wanneer we de data terug willen decoden, kiezen we weer een aantal DNA strings uit de gegenereerde strings.
+We controleren welke basen we terug vinden, en achterhalen zo welke corresponderende letter hier mee overeen komt.
 \newline
 
-\noindent
-vb: We zien op positie 3, in verschillende strings, de characters A en C. Dan weten we dat dit een Y representeert.
+\subsection*{Voorbeeld}
+ We zien op positie 3, in verschillende strings, de characters A en C. Dan weten we dat dit een Y representeert.
 
-Stel dat er maar 1 soort base wordt gelezen op een bepaalde positie. Dan zijn er 2 opties. 
+Stel dat er maar 1 soort base wordt gelezen op een bepaalde positie. Dan zijn er meerdere opties. 
 
 \begin{itemize}
 	\item We lezen inderdaad een letter met maar 1 base in zijn set. Correct.
@@ -124,17 +129,16 @@ Dit zorgt ervoor dat we niet altijd de correcte output terug krijgen.
 De kans op het correct lezen van een character (Denk ik):
 \newline
 
-$1-\left(\frac{1}{2^{N}}\right)$
+$$1-\left(\frac{1}{2}\right)^{N}$$
 \newline
 
 \noindent
 Dat maakt de kans op een volledig correct gelezen string
 \newline
 
-$\left(1-\left(\frac{1}{2^{N}}\right)\right)\ ^{L}$
+$$\left(1-\left(\frac{1}{2}\right)^{N}\right)^L$$
 \newline
 
-\noindent
 Met L het aantal characters in de DNA strings en N het aantal strings we gebruiken om te checken.
 
 Onze tests komen zeer goed overeen met deze formule. 
