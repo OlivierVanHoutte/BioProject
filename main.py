@@ -1,4 +1,6 @@
 from collections import defaultdict
+
+from plot import plot
 from utils import to_bin, is_pow_two, bye_to_char
 from itertools import combinations
 import math
@@ -39,8 +41,8 @@ def convert_to_valid_bases_amount(bases):
         print("To much degenerated bases for the amount of bases.")
         exit(0)
 
-    # if removed_bases:
-    #     print(f"Removed bases {removed_bases} to receive a convertible amount")
+    if removed_bases:
+        print(f"Removed bases {removed_bases} to receive a convertible amount")
     return bases, combs
 
 
@@ -95,8 +97,8 @@ def to_DNA(input, amount=1000):
                 output += tmp
 
         strings.append(output)
+    plot(strings, compact)
     return strings, compact, added_bits, conversions
-
 
 def to_simple_DNA(input):
     binary, added_bits = to_bin(input)
