@@ -30,6 +30,11 @@ def plot(strings, compact):
     z = [x[2] for x in plotData]
     c = [x[3] for x in plotData]
 
+    ax.set_xlabel('A')
+    ax.set_ylabel('C')
+    ax.set_zlabel('G')
+    # ax.set_clabel('T')
+
     img = ax.scatter(x, y, z, c=c, cmap=plt.hot())
     fig.colorbar(img)
     plt.show()

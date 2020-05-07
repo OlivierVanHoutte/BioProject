@@ -32,25 +32,17 @@ def convert_to_valid_bases_amount(bases):
         removed_bases.append(bases[-1])
         bases = bases[:-1]
 
-    combs = []
-    for i in range(1, len(Bases) + 1):
-        tmp = list(combinations(Bases, i))
-        combs += tmp
-
-    if len(bases) > len(combs):
-        print("To much degenerated bases for the amount of bases.")
-        exit(0)
+    for base in bases:
+        if base in Degenerated:
+            Degen_dict[base] = Degenerated[base]
 
     if removed_bases:
         print(f"Removed bases {removed_bases} to receive a convertible amount")
-    return bases, combs
+    return bases
 
 
 def conversion(bases):
-    bases, combs = convert_to_valid_bases_amount(bases)
-    for i in range(len(bases)):
-        if len(combs[i]) > 1:
-            Degen_dict[bases[i]] = list(combs[i])
+    bases = convert_to_valid_bases_amount(bases)
 
     bits_per_base = 0
     tmp_dict = {}
@@ -158,7 +150,7 @@ if __name__ == '__main__':
     output = {}
     print(f"Converting input string of size {len(input)} bytes")
     # simple = to_simple_DNA(input)
-    DNA, compact, added_bits, conversions = to_DNA(input, 1000)
+    DNA, compact, added_bits, conversions = to_DNA(input, 10000)
     print(f"DNA:\n\t{compact}")
     print(f"length:\n\t{len(compact)}")
     retries = 500
