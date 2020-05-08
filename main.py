@@ -143,8 +143,30 @@ def DNA_to_text(strings, added_bits, conversions, amount=1):
         string += bye_to_char(byte)
     return picked, string
 
+def theoretical():
+    bases = Bases + list(Degenerated.keys())
+
+    tmp = []
+    compact = ""
+    for i in range(1000):
+        data = ""
+        for j in range(144):
+            if i == 0:
+                pick = random.choice(bases)
+            else:
+                pick = compact[j]
+            if i == 0:
+                compact+= pick
+
+            if pick in Degenerated.keys():
+                data += random.choice(Degenerated[pick])
+            else:
+                data += pick
+        tmp.append(data)
+    plot(tmp, compact)
 
 if __name__ == '__main__':
+    theoretical()
     input = 'badkamer qiU!,dhg qhgqshgmquh qohg qduhsdi flIBDFQDHGB'
 
     output = {}

@@ -35,6 +35,7 @@ def plot(strings, compact):
     ax.set_zlabel('G')
     # ax.set_clabel('T')
 
-    img = ax.scatter(x, y, z, c=c, cmap=plt.hot())
-    fig.colorbar(img)
+    img = ax.scatter(x, y, z, c=c, cmap=plt.inferno())
+    bar = fig.colorbar(img)
+    bar.set_label('T')
     plt.show()
