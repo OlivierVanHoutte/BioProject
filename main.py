@@ -167,7 +167,7 @@ def theoretical():
 
 if __name__ == '__main__':
     theoretical()
-    input = 'badkamer qiU!,dhg qhgqshgmquh qohg qduhsdi flIBDFQDHGB'
+    input = 'Dit is een demo input string! We zetten dit om in DNA.'
 
     output = {}
     print(f"Converting input string of size {len(input)} bytes")
