@@ -167,11 +167,11 @@ def theoretical():
 
 if __name__ == '__main__':
     theoretical()
-    input = 'Dit is een demo input string! We zetten dit om in DNA.'
+    input = 'UAntwerpen'
 
     output = {}
     print(f"Converting input string of size {len(input)} bytes")
-    # simple = to_simple_DNA(input)
+    simple = to_simple_DNA(input)
     DNA, compact, added_bits, conversions = to_DNA(input, 10000)
     print(f"DNA:\n\t{compact}")
     print(f"length:\n\t{len(compact)}")
